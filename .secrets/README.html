@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>README</title>
+  <style>
+    body {
+  font-family: system-ui, -apple-system, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  line-height: 1.6;
+  color: #1f2937;
+  background: #ffffff;
+}
+h1 {
+  border-bottom: 3px solid #3b82f6;
+  padding-bottom: 0.5rem;
+  margin-top: 2rem;
+}
+h2 {
+  margin-top: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 0.25rem;
+}
+h3 {
+  margin-top: 1.5rem;
+  color: #374151;
+}
+code {
+  background: #f3f4f6;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: 'SF Mono', Monaco, Consolas, monospace;
+  font-size: 0.9em;
+}
+pre {
+  background: #1f2937;
+  color: #f9fafb;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+}
+th, td {
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+th {
+  background: #f9fafb;
+  font-weight: 600;
+}
+blockquote {
+  border-left: 4px solid #3b82f6;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #6b7280;
+}
+hr {
+  border: none;
+  border-top: 2px solid #e5e7eb;
+  margin: 2rem 0;
+}
+ul {
+  padding-left: 1.5rem;
+}
+li {
+  margin: 0.25rem 0;
+}
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+.badge-success { background: #d1fae5; color: #065f46; }
+.badge-warning { background: #fef3c7; color: #92400e; }
+.badge-danger { background: #fee2e2; color: #991b1b; }
+.badge-info { background: #dbeafe; color: #1e40af; }
+.meta {
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+  font-size: 0.9em;
+}
+  </style>
+</head>
+<body>
+
+  <h1>MapleSpike Secret Vault</h1>
+<p>Zero-knowledge, just-in-time secret management. Secrets encrypted at rest with <a href="https://age-encryption.org">age</a>, decrypted only when needed.</p>
+<h2>How it works</h2>
+<pre><code>.secrets/
+├── vault.age        ← Encrypted secrets (safe to commit)
+├── vault.age.pub    ← Public key (safe to commit)
+├── vault.json.example ← Template showing structure
+└── README.md        ← This file
+scripts/
+├── decrypt-secrets.sh  ← Decrypt vault → env vars
+└── encrypt-secrets.sh  ← Encrypt plaintext → vault.age
+</code></pre>
+<p>The <strong>private key</strong> is never stored in the repo. It&#39;s distributed through secure channels:</p>
+<table>
+<thead>
+<tr>
+<th>Environment</th>
+<th>Where the private key lives</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GitHub Actions</td>
+<td><code>AGE_SECRET_KEY</code> repo secret</td>
+</tr>
+<tr>
+<td>K3s cluster (NixOS)</td>
+<td><code>/run/agenix/age-key</code></td>
+</tr>
+<tr>
+<td>Local dev machine</td>
+<td><code>~/.config/age/key.txt</code></td>
+</tr>
+<tr>
+<td>Anywhere else</td>
+<td><code>AGE_SECRET_KEY</code> environment variable</td>
+</tr>
+</tbody></table>
+<h2>Usage</h2>
+<h3>Decrypt (just-in-time)</h3>
+<pre><code class="language-bash"># Export all secrets as environment variables
+eval &quot;$(scripts/decrypt-secrets.sh)&quot;
+
+# Or get JSON
+scripts/decrypt-secrets.sh --json
+</code></pre>
+<h3>Encrypt (update secrets)</h3>
+<pre><code class="language-bash"># Edit the JSON, then re-encrypt
+vim /tmp/secrets-plain.json
+scripts/encrypt-secrets.sh /tmp/secrets-plain.json
+shred -u /tmp/secrets-plain.json  # secure delete plaintext
+</code></pre>
+<h2>First-time setup</h2>
+<pre><code class="language-bash"># 1. Get the private key from the cluster admin
+# 2. Save it locally
+mkdir -p ~/.config/age
+chmod 700 ~/.config/age
+# Paste the private key into ~/.config/age/key.txt
+chmod 400 ~/.config/age/key.txt
+
+# 3. Test decryption
+eval &quot;$(scripts/decrypt-secrets.sh)&quot;
+echo $MAPLESPIKE_GITHUB_PROMOTION_TOKEN
+</code></pre>
+<h2>Adding to GitHub Actions</h2>
+<pre><code class="language-yaml">- name: Decrypt secrets
+  run: eval &quot;$(scripts/decrypt-secrets.sh)&quot;
+  env:
+    AGE_SECRET_KEY: ${{ secrets.AGE_SECRET_KEY }}
+</code></pre>
+<h2>Adding to K3s cluster</h2>
+<p>Add to your NixOS configuration (see <code>k8s/prod/ghcr-secret.nix</code> for the pattern):</p>
+<pre><code class="language-nix">systemd.services.maplespike-secret-vault = {
+  script = &#39;&#39;
+    AGE_KEY=$(cat /run/agenix/age-key)
+    cd /var/lib/maplespike
+    echo &quot;$AGE_KEY&quot; | age --decrypt -i - .secrets/vault.age &gt; /run/secrets/maplespike.json
+  &#39;&#39;;
+};
+</code></pre>
+
+</body>
+</html>

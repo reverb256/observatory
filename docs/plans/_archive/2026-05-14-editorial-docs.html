@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026-05-14-editorial-docs</title>
+  <style>
+    body {
+  font-family: system-ui, -apple-system, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  line-height: 1.6;
+  color: #1f2937;
+  background: #ffffff;
+}
+h1 {
+  border-bottom: 3px solid #3b82f6;
+  padding-bottom: 0.5rem;
+  margin-top: 2rem;
+}
+h2 {
+  margin-top: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 0.25rem;
+}
+h3 {
+  margin-top: 1.5rem;
+  color: #374151;
+}
+code {
+  background: #f3f4f6;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: 'SF Mono', Monaco, Consolas, monospace;
+  font-size: 0.9em;
+}
+pre {
+  background: #1f2937;
+  color: #f9fafb;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+}
+th, td {
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+th {
+  background: #f9fafb;
+  font-weight: 600;
+}
+blockquote {
+  border-left: 4px solid #3b82f6;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #6b7280;
+}
+hr {
+  border: none;
+  border-top: 2px solid #e5e7eb;
+  margin: 2rem 0;
+}
+ul {
+  padding-left: 1.5rem;
+}
+li {
+  margin: 0.25rem 0;
+}
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+.badge-success { background: #d1fae5; color: #065f46; }
+.badge-warning { background: #fef3c7; color: #92400e; }
+.badge-danger { background: #fee2e2; color: #991b1b; }
+.badge-info { background: #dbeafe; color: #1e40af; }
+.meta {
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+  font-size: 0.9em;
+}
+  </style>
+</head>
+<body>
+
+  <h1>Editorial Docs Implementation Plan</h1>
+<blockquote>
+<p><strong>For Claude:</strong> REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.</p>
+</blockquote>
+<p><strong>Goal:</strong> Replace VitePress docs with portal-native HTML pages using Pretext for editorial text layout, integrated into CI/CD.</p>
+<p><strong>Architecture:</strong> A Node.js build script (<code>scripts/build-docs.js</code>) converts markdown from <code>packages/docs/</code> into standalone HTML pages using the portal&#39;s template (same <code>styles.css</code>, <code>nav.js</code>, footer). Pretext (<code>@chenglou/pretext</code>) handles text measurement and layout in the browser — code blocks become obstacles that body text flows around, inline badges wrap correctly, and accordion sections expand with pre-calculated heights. Nginx serves the generated pages at <code>/docs/</code>.</p>
+<p><strong>Tech Stack:</strong> Node.js build script, <code>marked</code> (markdown→HTML), <code>@chenglou/pretext</code> (text layout), existing portal CSS (<code>styles.css</code>), existing nav (<code>nav.js</code>).</p>
+
+</body>
+</html>

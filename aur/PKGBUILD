@@ -1,0 +1,29 @@
+# Maintainer: MapleSpike <dev@maplespike.ca>
+# Contributor: MapleSpike <dev@maplespike.ca>
+
+pkgname=maplespike-bin
+pkgver=0.2.0
+pkgrel=1
+pkgdesc="Canadian government data pipeline — CLI for MapleSpike ingestion and query tools"
+arch=('x86_64' 'aarch64')
+url="https://maplespike.ca"
+license=('AGPL3')
+depends=('nodejs>=18' 'nodejs-lts-iron')
+makedepends=('pnpm' 'git')
+provides=('maplespike')
+conflicts=('maplespike-git')
+
+source=("$pkgname-$pkgver.tar.gz::https://github.com/reverb256/maplespike/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('0000000000000000000000000000000000000000000000000000000000000000')
+
+build() {
+  cd "$srcdir/maplespike-$pkgver"
+  pnpm install --frozen-lockfile
+  pnpm -r build
+}
+
+package() {
+  cd "$srcdir/maplespike-$pkgver"
+  install -Dm755 packages/pipeline-core/dist/cli/ingest.js "$pkgdir/usr/bin/maplespike"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

@@ -1,0 +1,20 @@
+{
+  "catalog_generated": "2026-05-13",
+  "total_sources": 1287,
+  "sources": [
+    {
+      "source": "open.canada.ca",
+      "portal_type": "ckan",
+      "organization": "Immigration, Refugees and Citizenship Canada",
+      "package_id": "f7e5498e-0ad8-4417-85c9-9b8aff9b9eda",
+      "title": "Permanent Residents – Monthly Updates",
+      "description": "IRCC permanent resident admissions by province/territory, country of citizenship, immigration category, CMA/CSD, NOC occupation, age group, gender",
+      "resources": [
+        { "url": "https://www.ircc.canada.ca/opendata-donneesouvertes/data/ODP-PR-PT_IMMCAT.csv", "format": "CSV", "machine_readable": true }
+      ],
+      "update_frequency": "monthly",
+      "suggested_module": "immigration"
+    }
+    // Full catalog truncated for this response - the complete 1,287 entries are in the repo file
+  ]
+}

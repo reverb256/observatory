@@ -1,0 +1,34 @@
+{
+  "ghcr": {
+    "pat_token": "ghp_xxx",
+    "description": "GitHub PAT with read:packages scope for GHCR image pulls"
+  },
+  "casdoor": {
+    "client_id": "xxx",
+    "client_secret": "xxx",
+    "authorize_url": "https://casdoor.example.com/login/oauth/authorize",
+    "token_url": "https://casdoor.example.com/api/login/oauth/access_token",
+    "user_info_url": "https://casdoor.example.com/api/userinfo"
+  },
+  "github": {
+    "promotion_token": "ghp_xxx",
+    "description": "PAT for auto-merge main->prod promotion job"
+  },
+  "nexus": {
+    "host": "nexus.lan",
+    "port": "22",
+    "user": "root",
+    "ssh_key": "ssh-ed25519 AAAA..."
+  },
+  "analytics": {
+    "domain": "maplespike.ca"
+  },
+  "smtp": {
+    "host": "",
+    "port": 587,
+    "user": "",
+    "password": "",
+    "from": "noreply@maplespike.ca",
+    "description": "SMTP for email verification — set when available"
+  }
+}

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MapleSpike</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.6;
+      color: #1f2937;
+      background: #ffffff;
+    }
+    h1 {
+      border-bottom: 3px solid #3b82f6;
+      padding-bottom: 0.5rem;
+      margin-top: 2rem;
+    }
+    h2 {
+      margin-top: 2rem;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 0.25rem;
+    }
+    h3 {
+      margin-top: 1.5rem;
+      color: #374151;
+    }
+    code {
+      background: #f3f4f6;
+      padding: 0.2em 0.4em;
+      border-radius: 3px;
+      font-family: 'SF Mono', Monaco, Consolas, monospace;
+      font-size: 0.9em;
+    }
+    pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+    pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1rem 0;
+    }
+    th, td {
+      border: 1px solid #e5e7eb;
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+    th {
+      background: #f9fafb;
+      font-weight: 600;
+    }
+    blockquote {
+      border-left: 4px solid #3b82f6;
+      padding-left: 1rem;
+      margin: 1rem 0;
+      color: #6b7280;
+    }
+    .meta {
+      background: #fef3c7;
+      border: 1px solid #fbbf24;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      margin: 1rem 0;
+      font-size: 0.9em;
+    }
+    hr {
+      border: none;
+      border-top: 2px solid #e5e7eb;
+      margin: 2rem 0;
+    }
+    ul {
+      padding-left: 1.5rem;
+    }
+    li {
+      margin: 0.25rem 0;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 3px;
+      font-size: 0.8em;
+      font-weight: 600;
+    }
+    .badge-success { background: #d1fae5; color: #065f46; }
+    .badge-warning { background: #fef3c7; color: #92400e; }
+    .badge-danger { background: #fee2e2; color: #991b1b; }
+    .badge-info { background: #dbeafe; color: #1e40af; }
+  </style>
+</head>
+<body>
+  <div class="meta">
+    <strong>Last reviewed:</strong> 2026-05-18 | <strong>Status:</strong> active
+  </div>
+
+  <h1>MapleSpike</h1>
+
+  <blockquote>
+    <strong>Canada's sovereign, AI-native government data pipeline</strong> — one unified layer for government data, corporate influence tracking, committee surveillance, regulatory intelligence, and policy actor tracking. Built with zero external cloud spend, deployed on a K3s cluster.
+  </blockquote>
+
+  <p>
+    <strong>Status:</strong> Active development ·
+    <strong>License:</strong> AGPL-3.0/MIT ·
+    <strong>Stack:</strong> TypeScript + Python + NixOS/K3s (backend) · Static HTML/CSS/JS (portal)
+  </p>
+
+  <p>
+    <strong>Current metrics:</strong> <a href="./docs/metrics.json">docs/metrics.json</a> — 65 modules, 24 MCP tools, ~115K lines TS, 10 packages.
+  </p>
+
+  <hr>
+
+  <h2>What it is</h2>
+
+  <p>MapleSpike ingests, verifies, and surfaces <strong>65 data modules</strong> of Canadian public-domain government data across every sector.</p>
+
+  <p><strong>Coverage:</strong></p>
+  <ul>
+    <li><strong>Federal core:</strong> IRCC immigration, StatCan WDS (CPI/GDP/labour/pop/trade), Health Canada, CRA Charity, Federal Budget, Proactive Disclosure, ATI, NPRI, Species at Risk, Impact Assessment, CIPO, CMHC</li>
+    <li><strong>Parliament & committees:</strong> House and Senate committees, Hansard, Canada Gazette, LEGISinfo</li>
+    <li><strong>Regulatory & oversight:</strong> OAG, PBO, Ethics Commissioner, Lobbying Commissioner, Competition Bureau, CRTC, Privacy Commissioner, Information Commissioner, Official Languages, CHRC, OSFI, FCAC, FINTRAC, CDIC</li>
+    <li><strong>Corporate & influence:</strong> Lobbying registry, procurement, SEDI insider trades, SEDAR+ filings, corporations Canada, 31 NGO/think tank RSS feeds, WEF narrative tracking</li>
+    <li><strong>Provincial:</strong> All 13 legislatures, 13 CKAN portals, 273 regulators across 21 categories (securities, law societies, police SIU, engineering, medical, teaching, etc.)</li>
+    <li><strong>Municipal:</strong> 19 cities with direct open data fetchers, 3,490+ via provincial CKAN federation, regional authorities (Peel, York, Durham, Metro Vancouver, CRD)</li>
+    <li><strong>Justice & legal:</strong> CanLII case law, A2AJ 116K+ decisions, Justice Canada legislation XML, federal tribunals, Ontario e-Laws, BC Laws</li>
+    <li><strong>Real-time:</strong> ECCC weather alerts (CAP-CP), CBSA border wait times, parole board decisions</li>
+    <li><strong>Unions & labour:</strong> CUPE, Unifor, PSAC annual reports, StatCan aggregates</li>
+    <li><strong>Universities:</strong> CUDO enrolment data, Tri-Council grants, per-institution CKAN</li>
+    <li><strong>Media & broadcasting:</strong> CRTC market reports, ownership charts, Canada Media Fund, Telefilm, Online News Act</li>
+    <li><strong>Defence & veterans:</strong> DND personnel, procurement</li>
+    <li><strong>SDK:</strong> @maplespike/sdk — typed TypeScript client (dual CJS/ESM). See <a href="./docs/metrics.json">docs/metrics.json</a> for current module coverage.</li>
+  </ul>
+
+  <p>Every record includes SHA-256 citation hashes, source provenance, and audit trails for independent verification.</p>
+
+  <p><strong>Current metrics:</strong> <a href="./docs/metrics.json">See docs/metrics.json</a> for current module/tool/line counts. All packages compile clean, SDK tests passing. Cross-reference engine connects lobbying ↔ committees ↔ GIC ↔ contracts ↔ elections.</p>
+
+  <hr>
+
+  <h2>Repository structure</h2>
+
+  <pre><code>maplespike/
+├── packages/
+│   ├── pipeline-core/    # Ingestion, verification, audit (shared library)
+│   ├── engine/           # Entity resolution, graph building, signals, briefs
+│   ├── pretext-civic/    # React component library (charts, geo) — orphaned
+│   ├── portal/           # Developer portal & landing page (static HTML)
+│   ├── api-server/       # REST API gateway (auth, rate limits, usage)
+│   ├── mcp-server/       # MCP protocol server (✅ 24 tools, all live)
+│   ├── sdk/              # TypeScript client library
+│   ├── sdk-python/       # Python client library
+│   ├── legal-core/       # Legal data SDK
+│   └── legislation/      # Legislation XML parser
+├── docs/                 # Architecture docs, roadmap, gap analysis
+├── CONTRIBUTING.md       # Contributor guide
+├── .hermes/              # Analysis plans and retrospectives
+├── .sisyphus/            # Orchestration plans
+├── flake.nix             # Nix build (delegates to nixos-config)
+├── ROADMAP.md            # Full phased roadmap & file inventory
+└── tsconfig.json         # Shared TypeScript configuration</code></pre>
+
+  <hr>
+
+  <h2>Build Plan (7 Phases)</h2>
+
+  <pre><code>pipeline-core ──→ SQLite DB ──→ MCP server (22 live tools) ──→ Dashboard / Console
+     │                                                             │
+     └── Engine reads same DB ──→ briefs/signals ─────────────────┘
+                                                                    │
+                                        Portal (static marketing) ──┘</code></pre>
+
+  <table>
+    <tr>
+      <th>Phase</th>
+      <th>What</th>
+      <th>Status</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td><strong>Shared DB</strong> — D1 interface → <code>better-sqlite3</code> wrapper, schema migration</td>
+      <td><span class="badge badge-success">✅ DONE</span></td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><strong>Wire Ingestion</strong> — corporate CSV parse + DB insert, influence real queries</td>
+      <td><span class="badge badge-success">✅ DONE</span></td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><strong>Wire MCP</strong> — 24 tools all returning real DB results</td>
+      <td><span class="badge badge-success">✅ DONE</span></td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><strong>Engine integration</strong> — entity resolution + brief gen reads shared DB</td>
+      <td><span class="badge badge-success">✅ DONE</span></td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><strong>Live Dashboard</strong> — hits MCP/API for live data</td>
+      <td><span class="badge badge-success">✅ DONE</span></td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td><strong>SaaS / Public API</strong> — Stripe + crypto + Interac billing, developer console</td>
+      <td><span class="badge badge-danger">🔴 TODO</span></td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td><strong>CI/CD + White-Label</strong> — GitHub Actions, enterprise tenants, journalism mode</td>
+      <td><span class="badge badge-danger">🔴 TODO</span></td>
+    </tr>
+  </table>
+
+  <p>See <a href="./ROADMAP.html">ROADMAP.html</a> for the full phased plan. Detailed architecture: <a href="./docs/ARCHITECTURE.md">docs/ARCHITECTURE.md</a>.</p>
+
+  <hr>
+
+  <h2>Quick start</h2>
+
+  <pre><code># Install dependencies
+pnpm install
+
+# Build all packages
+pnpm run build
+
+# Start MCP server (local stdio)
+cd packages/mcp-server
+pnpm start</code></pre>
+
+  <p><strong>All 24 MCP tools return real data</strong> — committees, corporate, influence, and government data are all searchable via the SQLite database. No external database configuration required for MCP tools.</p>
+
+  <hr>
+
+  <h2>Data sources</h2>
+
+  <table>
+    <tr>
+      <th>Source</th>
+      <th>Method</th>
+      <th>Coverage</th>
+    </tr>
+    <tr>
+      <td>House of Commons committees</td>
+      <td>XML evidence fetch</td>
+      <td>30 committees, Hansard transcripts, in-camera flags</td>
+    </tr>
+    <tr>
+      <td>Senate committees</td>
+      <td>XML evidence fetch</td>
+      <td>20 committees via sencanada.ca</td>
+    </tr>
+    <tr>
+      <td>Lobbying Registry (OCL)</td>
+      <td>CKAN CSV dump</td>
+      <td>All federal lobbying since 1996</td>
+    </tr>
+    <tr>
+      <td>Canada Gazette</td>
+      <td>RSS + detail fetch</td>
+      <td>Parts I (proposed), II (enacted), III (acts) regulations</td>
+    </tr>
+    <tr>
+      <td>GIC Appointments</td>
+      <td>CKAN + Infobase API</td>
+      <td>Governor-in-Council appointments, order-in-council</td>
+    </tr>
+    <tr>
+      <td>CanadaBuys / procurement</td>
+      <td>RSS + CKAN</td>
+      <td>Tender notices, contract awards, proactive disclosure</td>
+    </tr>
+    <tr>
+      <td>Provincial Lobbying</td>
+      <td>CKAN + registry search</td>
+      <td>All 13 provinces/territories</td>
+    </tr>
+    <tr>
+      <td>Elections Canada</td>
+      <td>CKAN + HTML parse</td>
+      <td>Third-party advertiser registry, spending reports</td>
+    </tr>
+    <tr>
+      <td>CRA Charities</td>
+      <td>HTML search</td>
+      <td>Registered charity financials, directors, programs</td>
+    </tr>
+    <tr>
+      <td>Executive statements</td>
+      <td>RSS (GlobeNewswire + IR feeds)</td>
+      <td>17 tracked executives across banking, telecom, media</td>
+    </tr>
+    <tr>
+      <td>Influence actors</td>
+      <td>Catalog + CKAN</td>
+      <td>32 IOs, NGOs, think tanks, consultancies</td>
+    </tr>
+    <tr>
+      <td>Oversight Bodies</td>
+      <td>RSS + HTML + JSON APIs</td>
+      <td>OAG, PBO, Ethics Commissioner, Lobbying Commissioner, Competition Bureau, CRTC</td>
+    </tr>
+    <tr>
+      <td>CanLII Court Decisions</td>
+      <td>REST API</td>
+      <td>Federal and provincial courts, citation graphs</td>
+    </tr>
+    <tr>
+      <td>LMIA</td>
+      <td>CKAN CSV</td>
+      <td>ESDC quarterly LMIA data, employer/occupation search</td>
+    </tr>
+    <tr>
+      <td>Statistics Canada</td>
+      <td>WDS/SDMX API</td>
+      <td>Economic, demographic, health data</td>
+    </tr>
+    <tr>
+      <td>open.canada.ca</td>
+      <td>CKAN API</td>
+      <td>Federal open data portal</td>
+    </tr>
+    <tr>
+      <td>Provincial portals</td>
+      <td>CKAN API</td>
+      <td>ON, BC, AB, QC</td>
+    </tr>
+  </table>
+
+  <hr>
+
+  <h2>Infrastructure</h2>
+
+  <p>Two environments run on the same K3s cluster, isolated by namespace and ingress hostname:</p>
+
+  <table>
+    <tr>
+      <th>Environment</th>
+      <th>Namespace</th>
+      <th>Hostname</th>
+    </tr>
+    <tr>
+      <td><strong>Production</strong></td>
+      <td><code>maplespike</code></td>
+      <td><code>maplespike.lan</code></td>
+    </tr>
+    <tr>
+      <td><strong>Development</strong></td>
+      <td><code>maplespike-dev</code></td>
+      <td><code>dev.maplespike.lan</code></td>
+    </tr>
+  </table>
+
+  <table>
+    <tr>
+      <th>Service</th>
+      <th>Platform</th>
+      <th>Stack</th>
+    </tr>
+    <tr>
+      <td>Portal (marketing + docs)</td>
+      <td><strong>K3s cluster</strong> (nginx)</td>
+      <td>Static HTML/CSS/JS per-environment config.js</td>
+    </tr>
+    <tr>
+      <td>Product Dashboard</td>
+      <td><strong>K3s cluster</strong> (nexus)</td>
+      <td>Next.js</td>
+    </tr>
+    <tr>
+      <td>MCP Server</td>
+      <td><strong>K3s cluster</strong></td>
+      <td>Node.js, SSE transport on 3001</td>
+    </tr>
+    <tr>
+      <td>API Server</td>
+      <td><strong>K3s cluster</strong></td>
+      <td>Node.js, Bearer auth, rate limiting</td>
+    </tr>
+    <tr>
+      <td>Engine / CronJobs</td>
+      <td><strong>K3s cluster</strong></td>
+      <td>Scheduled ingestion pipelines</td>
+    </tr>
+  </table>
+
+  <p><strong>Development endpoints:</strong></p>
+  <ul>
+    <li>Portal: <a href="https://dev.maplespike.lan">https://dev.maplespike.lan</a> (NodePort 30965)</li>
+    <li>API: <a href="https://dev-maplespike-api.lan">https://dev-maplespike-api.lan</a> (NodePort 31284)</li>
+    <li>MCP: <a href="https://dev-maplespike-mcp.lan">https://dev-maplespike-mcp.lan</a> (NodePort 31746)</li>
+  </ul>
+
+  <p>A <strong>Caddy ingress controller</strong> routes both <code>.lan</code> domains to the correct services and namespaces. Environment-specific manifests live in <code>k8s/dev/</code> and <code>k8s/prod/</code>. Portal config.js uses a <code>config.dev.js</code> / <code>config.prod.js</code> pattern, mounted via ConfigMap per environment.</p>
+
+  <p>All backend data stays on Canadian K3s cluster. No external cloud spend.</p>
+
+  <p><strong>API access:</strong> Auth + rate limiting + usage tracking work. Billing (Stripe, crypto, Interac) is the next major build. See <a href="./ROADMAP.html">ROADMAP.html</a>.</p>
+
+  <hr>
+
+  <h2>CI/CD</h2>
+
+  <p>GitHub Actions drives the two-environment deployment model:</p>
+
+  <table>
+    <tr>
+      <th>Branch</th>
+      <th>Workflow</th>
+      <th>Action</th>
+    </tr>
+    <tr>
+      <td><code>main</code></td>
+      <td>CI (ci.yml)</td>
+      <td>Run tests on every push</td>
+    </tr>
+    <tr>
+      <td><code>main</code></td>
+      <td>Deploy Dev (deploy-dev.yml)</td>
+      <td>Build + deploy to <code>maplespike-dev</code> namespace</td>
+    </tr>
+    <tr>
+      <td><code>prod</code></td>
+      <td>Deploy Prod (deploy-prod.yml)</td>
+      <td>Build + deploy to <code>maplespike-prod</code> namespace</td>
+    </tr>
+  </table>
+
+  <p>Container images are tagged <code>:dev</code> for dev builds and <code>:latest</code> for production. Each workflow builds, pushes to the registry, and applies the corresponding <code>k8s/dev/</code> or <code>k8s/prod/</code> Kubernetes manifests.</p>
+
+  <hr>
+
+  <h2>Related projects</h2>
+
+  <ul>
+    <li><a href="https://github.com/reverb256/Frostbite-Gazette">Frostbite Gazette</a> — AI-curated Canadian political journalism (first-class maplespike consumer)</li>
+    <li><a href="https://github.com/reverb256/mcp-canada">mcp-canada</a> — Canadian government MCP tools (precursor to MapleSpike)</li>
+  </ul>
+
+  <hr>
+
+  <h2>License</h2>
+
+  <ul>
+    <li><strong>Core library</strong> (<code>packages/pipeline-core</code>): AGPL-3.0</li>
+    <li><strong>MCP server</strong> (<code>packages/mcp-server</code>): MIT</li>
+    <li><strong>Engine</strong> (<code>packages/engine</code>): MIT</li>
+    <li><strong>Portal</strong> (<code>packages/portal</code>): MIT</li>
+  </ul>
+
+  <p>Government data retains its original license (primarily <a href="https://open.canada.ca/en/open-government-licence-canada">Open Government Licence – Canada</a>).</p>
+
+</body>
+</html>
